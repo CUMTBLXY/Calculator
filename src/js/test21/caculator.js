@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded",function(){
     var operators = document.getElementsByClassName("btn zong");
     var clearscream = document.getElementsByClassName("btn org")[0];
     var equalevent = document.getElementsByClassName("btn org")[1];
-    var result ;
+    //var result ;
     var space = [];
 
     //数字键
@@ -44,15 +44,16 @@ document.addEventListener("DOMContentLoaded",function(){
     //清除
     clearscream.addEventListener("click", function () {
         document.getElementById("result").value = '';
+        space = []
     }, false);
     //等号
     equalevent.addEventListener("click", function () {
         var display = document.getElementById("result");
         var comdis = new RegExp("[0-9]");
-        if(comdis.test(display)) {
-            space.push(display);
+        if(comdis.test(display.value)) {
+            space.push(display.value);
         }
-
+        console.log(space.toString());
         display.value = startyunsuan();
 
     }, false);
@@ -76,15 +77,17 @@ document.addEventListener("DOMContentLoaded",function(){
                     display.value = display.value+input;
                 }
                 else {//是符号就清空
+                    space.push(display.value);
                     display.value = input;
-                    space.push(input);
+
                 }
             }
         }
         else{//如果输入符号之前是数字就清空
             if(compnumber.test(display.value)||comppoint.test(display.value)){
+                space.push(display.value);
                 display.value = input;
-                space.push(input);
+
             }
             else{//如果之前输入的仍旧是符号的话
                 console.log(display.value);
@@ -94,7 +97,38 @@ document.addEventListener("DOMContentLoaded",function(){
     }
 
     function startyunsuan(){
-        
+        var temp = 0;
+        if( 1) {
+            while(space.indexOf('×') != -1||space.indexOf('÷') != -1) {
+                if(space.indexOf('×')<=space.indexOf('÷')) {
+                    temp = parseFloat(space[space.indexOf('×')-1])*parseFloat(space[space.indexOf('×')+1]);
+                    space.splice(space.indexOf('×')-1,3,temp);
+                }
+                else{
+                    temp = parseFloat(space[space.indexOf('÷')-1])/parseFloat(space[space.indexOf('÷')+1]);
+                    space.splice(space.indexOf('÷')-1,3,temp);
+                }
+                console.log(space);
+            }
+            while(space.indexOf('+')!= -1||space.indexOf('-')!= -1) {
+                if(space.indexOf('+')<=space.indexOf('-')) {
+                    console.log('1');
+                    console.log(space.indexOf('+'));
+                    temp = parseFloat(space[space.indexOf('+')-1])+parseFloat(space[space.indexOf('+')+1]);
+                    space.splice(space.indexOf('+')-1,3,temp);
+                }
+                else{
+                    temp = parseFloat(space[space.indexOf('-')-1])-parseFloat(space[space.indexOf('-')+1]);
+                    space.splice(space.indexOf('-')-1,3,temp);
+                }
+                console.log(space.indexOf("+"));
+                console.log(space);
+            }
+            console.log(space.length);
+            console.log(space);
+        }
+        return space[0];
+        console.log(space);
     }
 
 },false);
